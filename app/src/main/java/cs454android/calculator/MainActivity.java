@@ -1,5 +1,7 @@
 package cs454android.calculator;
 
+import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -18,8 +21,9 @@ public class MainActivity extends ActionBarActivity {
             btn_8, btn_9, btn_0, btn_decimal,
             btn_equal, btn_add, btn_multiply,
             btn_divide, btn_subtract, btn_delete;
+    private String operations[] = new String[3];
+    private int operationIndex;
     private String output;
-    private float fl_1, fl_2, fl_12;
     private boolean hasDecimal;
 
     @Override
@@ -215,13 +219,14 @@ public class MainActivity extends ActionBarActivity {
         newOutput = Arrays.toString(splitOutput);
         while(Arrays.asList(splitOutput).contains("+") || Arrays.asList(splitOutput).contains("-") || Arrays.asList(splitOutput).contains("*") || Arrays.asList(splitOutput).contains("/")){
             for(int i = 0 ; i < newOutput.length() ; i++){
-                if((splitOutput[i] == "*") || splitOutput[i]== "/"){
+                if((splitOutput[i].equals("*")) || splitOutput[i].equals("/")){
                     
                 }
             }
         }
         return newOutput;
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -239,6 +244,15 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.Scientific) {
+            Intent scientific = new Intent(MainActivity.this, ScientificActivity.class);
+            scientific.putExtra("output", output);
+            scientific.putExtra("operations", operations);
+            scientific.putExtra("opIndex", operationIndex);
+            scientific.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            startActivity(scientific);
         }
 
         return super.onOptionsItemSelected(item);
