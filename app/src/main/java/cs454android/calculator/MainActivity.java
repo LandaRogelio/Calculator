@@ -10,9 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Arrays;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -21,10 +18,14 @@ public class MainActivity extends ActionBarActivity {
             btn_8, btn_9, btn_0, btn_decimal,
             btn_equal, btn_add, btn_multiply,
             btn_divide, btn_subtract, btn_delete;
-    private String operations[] = new String[3];
-    private int operationIndex;
+
     private String output;
     private boolean hasDecimal;
+    private boolean newOperation;
+    private float num1, num2;
+    private String operation;
+    private EditText _output;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,178 +54,143 @@ public class MainActivity extends ActionBarActivity {
         btn_divide=(Button)findViewById(R.id.divide);
         btn_subtract=(Button)findViewById(R.id.subtract);
         btn_delete=(Button)findViewById(R.id.delete);
+        _output = (EditText)findViewById(R.id.textOutput);
 
         btn_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=1;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText()+"1", TextView.BufferType.EDITABLE);
             }
         });
         btn_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=2;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "2", TextView.BufferType.EDITABLE);
             }
         });
         btn_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=3;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "3", TextView.BufferType.EDITABLE);
             }
         });
         btn_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=4;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "4", TextView.BufferType.EDITABLE);
             }
         });
         btn_5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=5;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "5", TextView.BufferType.EDITABLE);
             }
         });
         btn_6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=6;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "6", TextView.BufferType.EDITABLE);
             }
         });
         btn_7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=7;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "7", TextView.BufferType.EDITABLE);
             }
         });
         btn_8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=8;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "8", TextView.BufferType.EDITABLE);
             }
         });
         btn_9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=9;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "9", TextView.BufferType.EDITABLE);
             }
         });
         btn_0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output+=0;
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                _output.setText(_output.getText() + "0", TextView.BufferType.EDITABLE);
             }
         });
         btn_decimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!hasDecimal){
-                    output+=".";
+                    _output.setText(_output.getText()+".", TextView.BufferType.EDITABLE);
                     hasDecimal = true;
                 }
-
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
             }
         });
         btn_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (output.length() > 0) {
-                    if(output.substring(output.length()-1, output.length()).equals(".")){
+
+                if (_output.length() > 0) {
+                    if(_output.getText().toString().substring(_output.length()-1,_output.length()).equals(".")){
                         hasDecimal = false;
                     }
-                    output = output.substring(0, output.length()-1);
+
+                    _output.setText(_output.getText().delete(_output.length()- 1, _output.length()), TextView.BufferType.EDITABLE);
                 }
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
             }
         });
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(output.length() == 0) {
-                    return;
-                }
-                //cant get this to work.
-                if( !(output.substring(output.length()-1, output.length()).equals("+")) || !(output.substring(output.length()-1, output.length()).equals("-")) ){
-                    output += "+";
-                }
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                num1 = Float.parseFloat(_output.getText().toString());
+                operation = "+";
+                _output.setText("", TextView.BufferType.EDITABLE);
             }
         });
         btn_subtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!output.substring(output.length()-1, output.length()).equals("+") || !output.substring(output.length()-1, output.length()).equals("-") || !output.substring(output.length()-1, output.length()).equals("*") || !output.substring(output.length()-1, output.length()).equals("/")){
-                    output += "-";
-                }
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                num1 = Float.parseFloat(_output.getText().toString());
+                operation = "-";
+                _output.setText("", TextView.BufferType.EDITABLE);
             }
         });
         btn_multiply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!output.substring(output.length()-1, output.length()).equals("+") || !output.substring(output.length()-1, output.length()).equals("-") || !output.substring(output.length()-1, output.length()).equals("*") || !output.substring(output.length()-1, output.length()).equals("/")){
-                    output += "*";
-                }
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                num1 = Float.parseFloat(_output.getText().toString());
+                operation = "*";
+                _output.setText("", TextView.BufferType.EDITABLE);
             }
         });
         btn_divide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!output.substring(output.length()-1, output.length()).equals("+") || !output.substring(output.length()-1, output.length()).equals("-") || !output.substring(output.length()-1, output.length()).equals("*") || !output.substring(output.length()-1, output.length()).equals("/")){
-                    output += "/";
-                }
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                num1 = Float.parseFloat(_output.getText().toString());
+                operation = "/";
+                _output.setText("", TextView.BufferType.EDITABLE);
             }
         });
         btn_equal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                output=calculateAnswer();
-                EditText editText = (EditText) findViewById(R.id.textOutput);
-                editText.setText(output, TextView.BufferType.EDITABLE);
+                num2 = Float.parseFloat(_output.getText().toString());
+                switch(operation){
+                    case "+":
+                        _output.setText( String.valueOf(num1 + num2), TextView.BufferType.EDITABLE );
+                        break;
+                    case "-":
+                        _output.setText( String.valueOf(num1 - num2), TextView.BufferType.EDITABLE );
+                        break;
+                    case "*":
+                        _output.setText( String.valueOf(num1 * num2), TextView.BufferType.EDITABLE );
+                        break;
+                    case "/":
+                        _output.setText( String.valueOf(num1 / num2), TextView.BufferType.EDITABLE );
+                        break;
+                }
+                operation = " ";
             }
         });
-    }
-
-    public String calculateAnswer(){
-        String newOutput = "";
-        String[] splitOutput = output.split("(?<=[-+*/])|(?=[-+*/])");
-        newOutput = Arrays.toString(splitOutput);
-        while(Arrays.asList(splitOutput).contains("+") || Arrays.asList(splitOutput).contains("-") || Arrays.asList(splitOutput).contains("*") || Arrays.asList(splitOutput).contains("/")){
-            for(int i = 0 ; i < newOutput.length() ; i++){
-                if((splitOutput[i].equals("*")) || splitOutput[i].equals("/")){
-                    
-                }
-            }
-        }
-        return newOutput;
     }
 
     @Override
@@ -248,9 +214,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (id == R.id.Scientific) {
             Intent scientific = new Intent(MainActivity.this, ScientificActivity.class);
-            scientific.putExtra("output", output);
-            scientific.putExtra("operations", operations);
-            scientific.putExtra("opIndex", operationIndex);
+            scientific.putExtra("output", _output.getText().toString() );
             scientific.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             startActivity(scientific);
         }
