@@ -447,7 +447,7 @@ public class MainActivity extends ActionBarActivity {
         double d = (double)x;
         double fact = 1;
         for (int i = 1; i <= d; i++){
-            fact = fact*1;
+            fact = fact*i;
         }
         return fact;
     }
